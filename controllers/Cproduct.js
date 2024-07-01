@@ -4,7 +4,7 @@ const Product = require('../models/mProduct');
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // Get all products
@@ -33,7 +33,7 @@ const createProduct = async (req, res) => {
             mainImage: mainImageUrl,
             details,
             quantity,
-            ratings
+            ratings,
         });
 
         const savedProduct = await newProduct.save();
@@ -83,5 +83,5 @@ module.exports = {
     getAllProducts,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
 };

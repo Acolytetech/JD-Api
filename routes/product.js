@@ -5,7 +5,7 @@ const {
     createProduct,
     updateProduct,
     deleteProduct,
-} = require('../controllers/productController');
+} = require('../controllers/Cproduct');
 
 // Get all products
 router.get('/', getAllProducts);

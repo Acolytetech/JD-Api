@@ -4,8 +4,9 @@ const connectDB = require('./db/connect');
 const productRoutes = require('./routes/product');
 const Product = require('./models/mProduct');
 const ProductJson = require('./Products.json'); // Assuming this file contains your new products
+const mongoose = require('mongoose');
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 require('dotenv').config();
 
@@ -16,7 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/products', productRoutes);
 
 // MongoDB Connection
-connectDB(process.env.MONGODB_URI)
+const mongodb_uri = process.env.MONGODB_URI;
+mongoose.connect(mongodb_uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(async () => {
         console.log('MongoDB Connected');
         // Insert new products if needed

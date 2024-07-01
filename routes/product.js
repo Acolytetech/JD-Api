@@ -4,7 +4,7 @@ const {
     getAllProducts,
     createProduct,
     updateProduct,
-    deleteProduct,
+    deleteProduct
 } = require('../controllers/Cproduct');
 
 // Get all products

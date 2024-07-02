@@ -9,13 +9,13 @@ require('dotenv').config();
 
 const PORT = process.env.PORT || 4000;
 
-// Middleware to parse JSON bodies
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware for CORS to allow requests from frontend
+
 app.use(cors({
-  origin: 'http://localhost:3000' // Your frontend's origin
+  origin: 'http://localhost:3000' 
 }));
 
 // Middleware for product routes
@@ -31,7 +31,6 @@ const insertProductsIfNeeded = async () => {
         // Array to store promises for product creation
         const insertPromises = [];
 
-        // Iterate over ProductJson and insert products sequentially
         for (const newProduct of ProductJson) {
             if (!existingProductNames.includes(newProduct.name)) {
                 // Create a new promise for each product insertion

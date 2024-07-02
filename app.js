@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const connectDB = require('./db/connect');
 const productRoutes = require('./routes/product');
@@ -11,6 +12,11 @@ const PORT = process.env.PORT || 4000;
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Middleware for CORS to allow requests from frontend
+app.use(cors({
+  origin: 'http://localhost:3000' // Your frontend's origin
+}));
 
 // Middleware for product routes
 app.use('/', productRoutes);

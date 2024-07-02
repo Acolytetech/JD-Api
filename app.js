@@ -3,7 +3,7 @@ const app = express();
 const connectDB = require('./db/connect');
 const productRoutes = require('./routes/product');
 const Product = require('./models/mProduct');
-const ProductJson = require('./Products.json'); // Assuming this file contains your new products
+const ProductJson = require('./products.json'); // Assuming this file contains your new products
 require('dotenv').config();
 
 const PORT = process.env.PORT || 4000;

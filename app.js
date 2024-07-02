@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Middleware for product routes
-app.use('/api/products', productRoutes);
+app.use('/', productRoutes);
 
 // Function to insert new products only if they don't already exist
 const insertProductsIfNeeded = async () => {

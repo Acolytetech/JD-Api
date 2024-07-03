@@ -4,11 +4,15 @@ const {
     getAllProducts,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductById
 } = require('../controllers/Cproduct');
 
 // Get all products
 router.get('/', getAllProducts);
+
+// Get a single product by ID
+router.get('/:productId', getProductById);
 
 // Create a new product
 router.post('/', createProduct);

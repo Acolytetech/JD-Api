@@ -40,7 +40,7 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-
+// Example route to handle file upload
 app.post('/upload', upload.single('image'), (req, res) => {
   res.json({ imageUrl: req.file.path });
 });

@@ -1,202 +1,142 @@
 [
-    {
-        "name": "4 Pieces Clothes Organizer For Wardrobe Cupboard Organizer For Clothes Foldable And Stackable Closet Organizer Drawer Organizer For Clothes, Almirah Space Organizer For Cupboard",
-        "mainImage": "https://m.media-amazon.com/images/I/71buoxwxRgL._SY879_.jpg",
-        "additionalImages": [
-          "https://m.media-amazon.com/images/I/51ihRkmY-LL._SX569_.jpg",
-          "https://m.media-amazon.com/images/I/61Rf3MLy+2L._SX569_.jpg",
-          "https://m.media-amazon.com/images/I/71tMvJdGeCL._SX569_.jpg"
-        ],
-        "details": [
-          {
-            "title": "Durable & Sturdy",
-            "description": "Made of premium PP materials, super strong with reinforced frames and side walls construction, ensure stability for long time services cloth organizer for wardrobe, organisers storage for clothes"
-          }
-        ],
-        "price": "₹1,299",
-        "quantity": 10,
-        "ratings": 4.5,
-        "material": "Polypropylene",
-        "roomType": [
-          "Office",
-          "Kitchen",
-          "Closet",
-          "Bedroom",
-          "Living Room",
-          "Study Room"
-        ],
-        "numberOfShelves": 4,
-        "specialFeature": "Foldable",
-        "productDimensions": "43D x 32.5W x 18.5H Centimeters",
-        "style": "modern",
-        "brand": "JD FRESH",
-        "productCareInstructions": "dry_clean_only",
-        "sizeOptions": [
-          { "size": "2 PCS", "price": "₹698.00" },
-          { "size": "4 PCS", "price": "₹1,299.00" },
-          { "size": "6 PCS", "price": "₹2,139.00" },
-          { "size": "8 PCS", "price": "₹2,298.00" },
-          { "size": "10 PCS", "price": "₹3,209.00" },
-          { "size": "12 PCS", "price": "₹2,998.00" }
-        ]
+  {
+    "name": "4 Pieces Clothes Organizer For Wardrobe Cupboard Organizer For Clothes Foldable And Stackable Closet Organizer Drawer Organizer For Clothes, Almirah Space Organizer For Cupboard",
+    "mainImage": "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075351/products/reheaordlmg6skkfrlbw.jpg",
+    "additionalImages": [
+      "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075605/products/svtaupfikcp0npvon664.jpg",
+      "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075606/products/eck2sbbyzebhyruvadmz.jpg",
+      "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075354/products/vnlk5h8xmda9kuekr2jf.jpg"
+    ],
+    "details": [
+      {
+        "title": "Durable & Sturdy",
+        "description": "Made of premium PP materials, super strong with reinforced frames and side walls construction, ensure stability for long time services cloth organizer for wardrobe, organisers storage for clothes"
+      }
+    ],
+    "price": "₹1,299",
+    "quantity": 10,
+    "ratings": 4.5,
+    "material": "Polypropylene",
+    "roomType": [
+      "Office",
+      "Kitchen",
+      "Closet",
+      "Bedroom",
+      "Living Room",
+      "Study Room"
+    ],
+    "numberOfShelves": 4,
+    "specialFeature": "Foldable",
+    "productDimensions": "43D x 32.5W x 18.5H Centimeters",
+    "style": "modern",
+    "brand": "JD FRESH",
+    "productCareInstructions": "dry_clean_only",
+    "sizeOptions": [
+      { "size": "2 PCS", "price": "₹698.00" },
+      { "size": "4 PCS", "price": "₹1,299.00" },
+      { "size": "6 PCS", "price": "₹2,139.00" },
+      { "size": "8 PCS", "price": "₹2,298.00" },
+      { "size": "10 PCS", "price": "₹3,209.00" },
+      { "size": "12 PCS", "price": "₹2,998.00" }
+    ]
+  },
+  {
+    "name": "JD FRESH 3 Tiers Plastic Storage Boxes For Clothes Plastic Rack For Storage Drawer Storage Organizer Folding Storage Cabinets Cupboard For Storage Folding Storage Cabinet, 25 Cm, 25 Cm, 30 Cm, White",
+    "mainImage": "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075355/products/wmbndek715vs6crnmah5.jpg",
+    "additionalImages": [
+      "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075356/products/brzlwisjwckb5gzidoys.jpg",
+      "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075356/products/uqferetubhnxvd1xmcdg.jpg",
+      "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075357/products/csufn3gbl0nse9kd6ejf.jpg"
+    ],
+    "details": [
+      {
+        "title": "MULTIPLE USES",
+        "description": "This Folding Storage Cabinet Wardrobes Are A Versatile And Convenient Storage Solution. They Are Easy To Transport, Affordable, And Can Be Used For A Variety Of Purposes Such As Storing Clothes, Books, Toys And Many More."
+      }
+    ],
+    "price": "₹1,299",
+    "quantity": 10,
+    "ratings": 4.5,
+    "material": "Plastic",
+    "roomType": [
+      "Office",
+      "Kitchen",
+      "Closet",
+      "Bedroom",
+      "Living Room",
+      "Study Room"
+    ],
+    "numberOfShelves": 2,
+    "specialFeature": "Flexible stacking cupboards",
+    "productDimensions": "38D x 33W x 105H Centimeters",
+    "style": "modern",
+    "brand": "JD FRESH",
+    "productCareInstructions": "dry_clean_only",
+    "sizeOptions": [
+      { "size": "2 PCS", "price": "₹698.00" },
+      { "size": "4 PCS", "price": "₹1,299.00" },
+      { "size": "6 PCS", "price": "₹2,139.00" },
+      { "size": "8 PCS", "price": "₹2,298.00" },
+      { "size": "10 PCS", "price": "₹3,209.00" },
+      { "size": "12 PCS", "price": "₹2,998.00" }
+    ]
+  },
+  {
+    "name": "JD FRESH 1 Unit Plastic Cupboard For Clothes Storage, Foldable Plastic Cupboard For Storage, Foldable Wardrobe For Kitchen Cupboard For Storage, Cupboard For Bedroom Living Room And Office - White",
+    "mainImage": "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075358/products/ztd3urp00iw7eozm1vsk.jpg",
+    "additionalImages": [
+      "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075359/products/rfuiofd54ws7bb0jzocq.jpg",
+      "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075360/products/brhdm879pycgyb94hrse.jpg",
+      "https://res.cloudinary.com/dhiz3z2v7/image/upload/v1720075361/products/knzuvbo6fveblplxpiqx.jpg"
+    ],
+    "details": [
+      {
+        "title": "MULTIPLE USES",
+        "description": "This Folding Storage Cabinet Wardrobes Are A Versatile And Convenient Storage Solution. They Are Easy To Transport, Affordable, And Can Be Used For A Variety Of Purposes Such As Storing Clothes, Books, Toys And Many More."
       },
-    {
-      "name": "JD FRESH 3 Tiers Plastic Storage Boxes For Clothes Plastic Rack For Storage Drawer Storage Organizer Folding Storage Cabinets Cupboard For Storage Folding Storage Cabinet, 25 Cm, 25 Cm, 30 Cm, White",
-      "mainImage": "https://m.media-amazon.com/images/I/81lmvOk-TdL._SX569_.jpg",
-      "additionalImages": [
-        "https://m.media-amazon.com/images/I/61QwtGP7HvL._SX569_.jpg",
-        "https://m.media-amazon.com/images/I/71887tIZ-yL._SX569_.jpg",
-        "https://m.media-amazon.com/images/I/61cox47w3NL._SX569_.jpg"
-      ],
-      "details": [
-        {
-          "title": "MULTIPLE USES",
-          "description": "This Folding Storage Cabinet Wardrobes Are A Versatile And Convenient Storage Solution. They Are Easy To Transport, Affordable, And Can Be Used For A Variety Of Purposes Such As Storing Clothes, Books, Toys And Many More."
-        }
-      ],
-      "price": "₹1,299",
-      "quantity": 10,
-      "ratings": 4.5,
-      "material": "Plastic",
-      "roomType": [
-        "Office",
-        "Kitchen",
-        "Closet",
-        "Bedroom",
-        "Living Room",
-        "Study Room"
-      ],
-      "numberOfShelves": 2,
-      "specialFeature": "Flexible stacking cupboards",
-      "productDimensions": "38D x 33W x 105H Centimeters",
-      "style": "modern",
-      "brand": "JD FRESH",
-      "productCareInstructions": "dry_clean_only",
-      "sizeOptions": [
-        { "size": "2 PCS", "price": "₹698.00" },
-        { "size": "4 PCS", "price": "₹1,299.00" },
-        { "size": "6 PCS", "price": "₹2,139.00" },
-        { "size": "8 PCS", "price": "₹2,298.00" },
-        { "size": "10 PCS", "price": "₹3,209.00" },
-        { "size": "12 PCS", "price": "₹2,998.00" }
-      ]
-    },
-    {
-      "name": "JD FRESH 4 Units Plastic Cupboard For Clothes Plastic Cabinet For Storage Foldable Wardrobe For Clothes Plastic Cloth Rack For Storage Clothes Storage Cabinet Plastic Modular Drawer Storage Box, White",
-      "mainImage": "https://m.media-amazon.com/images/I/81lmvOk-TdL._SX569_.jpg",
-      "additionalImages": [
-        "https://m.media-amazon.com/images/I/612oFVxO0dL._SX569_.jpg",
-        "https://m.media-amazon.com/images/I/71887tIZ-yL._SX569_.jpg",
-        "https://m.media-amazon.com/images/I/51OcSeokibL._SX569_.jpg"
-      ],
-      "details": [
-        {
-          "title": "MULTIPLE USES",
-          "description": "This Folding Storage Cabinet Wardrobes Are A Versatile And Convenient Storage Solution. They Are Easy To Transport, Affordable, And Can Be Used For A Variety Of Purposes Such As Storing Clothes, Books, Toys And Many More."
-        },
-        {
-          "title": "Easy to transport",
-          "description": "Foldable plastic wardrobes are easy to transport and can be moved from one location to another. This makes them ideal for people who move frequently or who need temporary storage space."
-        },
-        {
-          "title": "Multipurpose Storage Organizer",
-          "description": "Foldable plastic wardrobes can be used to store clothes, bedding, and other personal belongings. In the living room: Foldable plastic wardrobes can be used to store blankets, pillows, toys, and other household items and in the office, garage, dorm room."
-        },
-        {
-          "title": "Made in ABS materials",
-          "description": "ABS is a strong and impact-resistant plastic that used in products that need to withstand a lot of wear and tear. It is also relatively easy to mold, making it a good choice for plastic cupboards with complex designs."
-        },
-        {
-          "title": "Flexible stacking cupboards",
-          "description": "Stack and Organize your cupboard more effectively. You can able to stack the cupboards in one, two and multiple layers as per your needs. You can also add more unit of cupboard later on if required with same make."
-        }
-      ],
-      "price": "₹2,298",
-      "quantity": 10,
-      "ratings": 4.5,
-      "material": "Plastic",
-      "color": "Cupboard Single Door",
-      "roomType": [
-        "Office",
-        "Garage",
-        "Living Room"
-      ],
-      "numberOfShelves": 1,
-      "specialFeature": "foldable",
-      "productDimensions": "38D x 33W x 107H Centimeters",
-      "style": "modern",
-      "brand": "JD FRESH",
-      "productCareInstructions": "dry_clean_only",
-      "mountingType": "Floor Mount",
-      "includedComponents": ["Cupboards"],
-      "finishType": "Polished",
-      "sizeOptions": [
-        { "size": "1 Tier", "price": "₹2,298.00" },
-        { "size": "2 Tier", "price": "₹2,598.00" },
-        { "size": "3 Tier", "price": "₹2,898.00" },
-        { "size": "4 Tier", "price": "₹3,198.00" },
-        { "size": "5 Tier", "price": "₹3,498.00" },
-        { "size": "6 Tier", "price": "₹3,798.00" }
-      ]
-    },
-    {
-      "name": "JD FRESH 1 Unit Plastic Cupboard For Clothes Storage, Foldable Plastic Cupboard For Storage, Foldable Wardrobe For Kitchen Cupboard For Storage, Cupboard For Bedroom Living Room And Office - White",
-      "mainImage": "https://m.media-amazon.com/images/I/71HhQjIVTSL._SX569_.jpg",
-      "additionalImages": [
-        "https://m.media-amazon.com/images/I/71lIv8mIG8L._SX569_.jpg",
-        "https://m.media-amazon.com/images/I/71vFGW4RYAL._SX569_.jpg",
-        "https://m.media-amazon.com/images/I/713P6hJ2nyL._SX569_.jpg",
-        "https://m.media-amazon.com/images/I/51FH9sLFh+L._SX569_.jpg"
-      ],
-      "details": [
-        {
-          "title": "MULTIPLE USES",
-          "description": "This Folding Storage Cabinet Wardrobes Are A Versatile And Convenient Storage Solution. They Are Easy To Transport, Affordable, And Can Be Used For A Variety Of Purposes Such As Storing Clothes, Books, Toys And Many More."
-        },
-        {
-          "title": "Easy to transport",
-          "description": "Foldable plastic wardrobes are easy to transport and can be moved from one location to another. This makes them ideal for people who move frequently or who need temporary storage space."
-        },
-        {
-          "title": "Multipurpose Storage Organizer",
-          "description": "Foldable plastic wardrobes can be used to store clothes, bedding, and other personal belongings. In the living room: Foldable plastic wardrobes can be used to store blankets, pillows, toys, and other household items and in the office, garage, dorm room."
-        },
-        {
-          "title": "Made in ABS materials",
-          "description": "ABS is a strong and impact-resistant plastic that used in products that need to withstand a lot of wear and tear. It is also relatively easy to mold, making it a good choice for plastic cupboards with complex designs."
-        },
-        {
-          "title": "Flexible stacking cupboards",
-          "description": "Stack and Organize your cupboard more effectively. You can able to stack the cupboards in one, two and multiple layers as per your needs. You can also add more unit of cupboard later on if required with same make."
-        }
-      ],
-      "price": "₹3,029",
-      "quantity": 10,
-      "ratings": 4.5,
-      "material": "Plastic",
-      "color": "Cupboard Single Door",
-      "roomType": [
-        "Office",
-        "Garage",
-        "Living Room"
-      ],
-      "numberOfShelves": 3,
-      "specialFeature": "Flexible stacking cupboards",
-      "productDimensions": "38D x 33W x 107H Centimeters",
-      "style": "modern",
-      "brand": "JD FRESH",
-      "productCareInstructions": "dry_clean_only",
-      "mountingType": "Floor Mount",
-      "includedComponents": ["Cupboards"],
-      "finishType": "Polished",
-      "sizeOptions": [
-        { "size": "1 Tier", "price": "₹2,298.00" },
-        { "size": "2 Tier", "price": "₹2,598.00" },
-        { "size": "3 Tier", "price": "₹2,898.00" },
-        { "size": "4 Tier", "price": "₹3,198.00" },
-        { "size": "5 Tier", "price": "₹3,498.00" },
-        { "size": "6 Tier", "price": "₹3,798.00" }
-      ]
-    }
-  ]
-  
+      {
+        "title": "Easy to transport",
+        "description": "Foldable plastic wardrobes are easy to transport and can be moved from one location to another. This makes them ideal for people who move frequently or who need temporary storage space."
+      },
+      {
+        "title": "Multipurpose Storage Organizer",
+        "description": "Foldable plastic wardrobes can be used to store clothes, bedding, and other personal belongings. In the living room: Foldable plastic wardrobes can be used to store blankets, pillows, toys, and other household items and in the office, garage, dorm room."
+      },
+      {
+        "title": "Made in ABS materials",
+        "description": "ABS is a strong and impact-resistant plastic that used in products that need to withstand a lot of wear and tear. It is also relatively easy to mold, making it a good choice for plastic cupboards with complex designs."
+      },
+      {
+        "title": "Flexible stacking cupboards",
+        "description": "Stack and Organize your cupboard more effectively. You can able to stack the cupboards in one, two and multiple layers as per your needs. You can also add more unit of cupboard later on if required with same make."
+      }
+    ],
+    "price": "₹3,029",
+    "quantity": 10,
+    "ratings": 4.5,
+    "material": "Plastic",
+    "color": "Cupboard Single Door",
+    "roomType": [
+      "Office",
+      "Garage",
+      "Living Room"
+    ],
+    "numberOfShelves": 3,
+    "specialFeature": "Flexible stacking cupboards",
+    "productDimensions": "38D x 33W x 107H Centimeters",
+    "style": "modern",
+    "brand": "JD FRESH",
+    "productCareInstructions": "dry_clean_only",
+    "mountingType": "Floor Mount",
+    "includedComponents": ["Cupboards"],
+    "finishType": "Polished",
+    "sizeOptions": [
+      { "size": "1 Tier", "price": "₹2,298.00" },
+      { "size": "2 Tier", "price": "₹2,598.00" },
+      { "size": "3 Tier", "price": "₹2,898.00" },
+      { "size": "4 Tier", "price": "₹3,198.00" },
+      { "size": "5 Tier", "price": "₹3,498.00" },
+      { "size": "6 Tier", "price": "₹3,798.00" }
+    ]
+  }
+]

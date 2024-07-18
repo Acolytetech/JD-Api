@@ -32,12 +32,12 @@
     "brand": "JD FRESH",
     "productCareInstructions": "dry_clean_only",
     "sizeOptions": [
-      { "size": "2 PCS", "price": "₹698.00" },
-      { "size": "4 PCS", "price": "₹1,299.00" },
-      { "size": "6 PCS", "price": "₹2,139.00" },
-      { "size": "8 PCS", "price": "₹2,298.00" },
-      { "size": "10 PCS", "price": "₹3,209.00" },
-      { "size": "12 PCS", "price": "₹2,998.00" }
+      { "size": "2 PCS", "price": 98.00 },
+      { "size": "4 PCS", "price": 1299.00 },
+      { "size": "6 PCS", "price": 2139.00 },
+      { "size": "8 PCS", "price": 2298.00 },
+      { "size": "10 PCS", "price": 3209.00 },
+      { "size": "12 PCS", "price": 2998.00 }
     ]
   },
   {
@@ -73,12 +73,12 @@
     "brand": "JD FRESH",
     "productCareInstructions": "dry_clean_only",
     "sizeOptions": [
-      { "size": "2 PCS", "price": "₹698.00" },
-      { "size": "4 PCS", "price": "₹1,299.00" },
-      { "size": "6 PCS", "price": "₹2,139.00" },
-      { "size": "8 PCS", "price": "₹2,298.00" },
-      { "size": "10 PCS", "price": "₹3,209.00" },
-      { "size": "12 PCS", "price": "₹2,998.00" }
+      { "size": "2 PCS", "price": 698.00 },
+      { "size": "4 PCS", "price": 1299.00 },
+      { "size": "6 PCS", "price": 2139.00 },
+      { "size": "8 PCS", "price": 2298.00 },
+      { "size": "10 PCS", "price": 3209.00 },
+      { "size": "12 PCS", "price": 2998.00 }
     ]
   },
   {
@@ -131,12 +131,12 @@
     "includedComponents": ["Cupboards"],
     "finishType": "Polished",
     "sizeOptions": [
-      { "size": "1 Tier", "price": "₹2,298.00" },
-      { "size": "2 Tier", "price": "₹2,598.00" },
-      { "size": "3 Tier", "price": "₹2,898.00" },
-      { "size": "4 Tier", "price": "₹3,198.00" },
-      { "size": "5 Tier", "price": "₹3,498.00" },
-      { "size": "6 Tier", "price": "₹3,798.00" }
+      { "size": "1 Tier", "price": 2298.00 },
+      { "size": "2 Tier", "price": 2598.00 },
+      { "size": "3 Tier", "price": 2898.00 },
+      { "size": "4 Tier", "price": 3198.00 },
+      { "size": "5 Tier", "price": 3498.00 },
+      { "size": "6 Tier", "price": 3798.00 }
     ]
   }
 ]

@@ -25,8 +25,10 @@ const getProductById = async (req, res) => {
 
 // Create a new product
 const createProduct = async (req, res) => {
+    console.log(req.body)
     try {
         const newProduct = new Product(req.body);
+        console.log(newProduct)
         const savedProduct = await newProduct.save();
         res.status(201).json(savedProduct);
     } catch (error) {

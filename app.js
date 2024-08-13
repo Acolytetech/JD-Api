@@ -1,13 +1,13 @@
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./db/connect');
-const productRoutes = require('./routes/product');
-const Product = require('./models/mProduct');
+const mongoose = require('mongoose');
 const cloudinary = require('cloudinary').v2;
-const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+const productRoutes = require('./routes/product');
 require('dotenv').config();
 
+// Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -46,6 +46,17 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
+// Connect to MongoDB
+const connectDB = async (uri) => {
+  try {
+    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('MongoDB Connected');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
+  }
+};
+
 // Function to generate unique order number
 const generateOrderNumber = () => {
   return 'ORD-' + Math.random().toString(36).substr(2, 9).toUpperCase();
@@ -55,12 +66,14 @@ const generateOrderNumber = () => {
 const insertProductsIfNeeded = async () => {
   try {
     const ProductJson = require('./products.json');
+    const Product = require('./models/mProduct');
     const existingProducts = await Product.find({}, { name: 1 });
     const existingProductNames = existingProducts.map(product => product.name);
 
     for (const newProduct of ProductJson) {
       if (!existingProductNames.includes(newProduct.name)) {
-        await Product.create(newProduct);
+        const orderNumber = generateOrderNumber(); // Generate order number
+        await Product.create({ ...newProduct, orderNumber }); // Add order number to the new product
         console.log(`Inserted new product: ${newProduct.name}`);
         await new Promise(resolve => setTimeout(resolve, 100));
       } else {
@@ -94,6 +107,7 @@ app.post('/add-product', upload.fields([{ name: 'mainImage', maxCount: 1 }, { na
 
     const orderNumber = generateOrderNumber();
 
+    const Product = require('./models/mProduct');
     const newProduct = new Product({
       name,
       price,
@@ -120,6 +134,7 @@ app.post('/add-product', upload.fields([{ name: 'mainImage', maxCount: 1 }, { na
   }
 });
 
+// Root endpoint
 app.get("/", (req, res) => {
   res.send("Welcome to the API");
 });
@@ -146,5 +161,3 @@ const startServer = async () => {
 
 // Call function to start server
 startServer();
-
-module.exports = app;

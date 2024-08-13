@@ -1,3 +1,4 @@
+// Required packages
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -134,9 +135,16 @@ app.post('/add-product', upload.fields([{ name: 'mainImage', maxCount: 1 }, { na
   }
 });
 
-// Root endpoint
-app.get("/", (req, res) => {
-  res.send("Welcome to the API");
+// Root endpoint to get all products
+app.get("/", async (req, res) => {
+  try {
+    const Product = require('./models/mProduct');
+    const products = await Product.find({});
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
 });
 
 // Start server and initialize operations

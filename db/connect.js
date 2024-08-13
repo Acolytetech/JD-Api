@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const connectDB = async (uri) => {
     try {
         await mongoose.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
+            useUnifiedTopology: true // This is still recommended for handling MongoDB topology
         });
         console.log('MongoDB Connected');
     } catch (error) {

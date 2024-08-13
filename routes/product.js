@@ -26,19 +26,16 @@ const upload = multer({ storage: storage });
 // Get all products
 router.get('/', getAllProducts);
 
-// Get a single product by ID
-router.get('/:orderNumber', getProductById);
-
-router.get('/:productId', getProductById);
-router.put('/:id', upload.fields([{ name: 'mainImage', maxCount: 1 }, { name: 'additionalImages', maxCount: 10 }]), updateProduct);
+// Get a single product by order number (or productId)
+router.get('/:identifier', getProductById);
 
 // Create a new product with image upload
 router.post('/', upload.fields([{ name: 'mainImage', maxCount: 1 }, { name: 'additionalImages', maxCount: 10 }]), createProduct);
 
 // Update a product with image upload
-router.put('/:orderNumber', upload.fields([{ name: 'mainImage', maxCount: 1 }, { name: 'additionalImages', maxCount: 10 }]), updateProduct);
+router.put('/:identifier', upload.fields([{ name: 'mainImage', maxCount: 1 }, { name: 'additionalImages', maxCount: 10 }]), updateProduct);
 
-// Delete a product
-router.delete('/:orderNumber', deleteProduct);
+// Delete a product by order number (or productId)
+router.delete('/:identifier', deleteProduct);
 
 module.exports = router;

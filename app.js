@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
-const productRoutes = require('./routes/product');
 require('dotenv').config();
 
 // Initialize Express app
@@ -137,7 +136,7 @@ app.post('/add-product', upload.fields([{ name: 'mainImage', maxCount: 1 }, { na
   }
 });
 
-// Root endpoint to get all products
+// Endpoint to get all products
 app.get("/", async (req, res) => {
   try {
     const Product = require('./models/mProduct');
@@ -145,6 +144,33 @@ app.get("/", async (req, res) => {
     res.status(200).json(products);
   } catch (error) {
     console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Route to get a product by ID
+app.get('/:id', async (req, res) => {
+  console.log('Request received for product ID:', req.params.id);
+  const productId = req.params.id;
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    console.log('Invalid Product ID:', productId);
+    return res.status(400).json({ message: 'Invalid Product ID' });
+  }
+
+  try {
+    const Product = require('./models/mProduct');
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      console.log('Product not found:', productId);
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    console.log('Product found:', product);
+    res.status(200).json(product);
+  } catch (error) {
+    console.error('Error fetching product by ID:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
@@ -157,8 +183,6 @@ const startServer = async () => {
 
     // Insert products if needed
     await insertProductsIfNeeded();
-
-    app.use('/products', productRoutes);
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);

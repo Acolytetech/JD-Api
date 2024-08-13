@@ -1,41 +1,26 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const {
-  getAllProducts,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-  getProductById
-} = require('../controllers/Cproduct');
-
 const router = express.Router();
-
-// Setup Multer storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  }
-});
-
-const upload = multer({ storage: storage });
+const {
+    getAllProducts,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    getProductById
+} = require('../controllers/Cproduct');
 
 // Get all products
 router.get('/', getAllProducts);
 
 // Get a single product by ID
-router.get('/:orderNumber', getProductById);
+router.get('/:productId', getProductById);
 
-// Create a new product with image upload
-router.post('/', upload.fields([{ name: 'mainImage', maxCount: 1 }, { name: 'additionalImages', maxCount: 10 }]), createProduct);
+// Create a new product
+router.post('/', createProduct);
 
-// Update a product with image upload
-router.put('/:orderNumber', upload.fields([{ name: 'mainImage', maxCount: 1 }, { name: 'additionalImages', maxCount: 10 }]), updateProduct);
+// Update a product
+router.put('/:productId', updateProduct);
 
 // Delete a product
-router.delete('/:orderNumber', deleteProduct);
+router.delete('/:productId', deleteProduct);
 
 module.exports = router;

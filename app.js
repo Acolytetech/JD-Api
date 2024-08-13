@@ -6,6 +6,7 @@ const Product = require('./models/mProduct');
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
@@ -16,10 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS settings
-const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = ['http://localhost:3000', 'https://ecommerce-4jip.vercel.app'];
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -51,22 +52,55 @@ const generateOrderNumber = () => {
   return 'ORD-' + Math.random().toString(36).substr(2, 9).toUpperCase();
 };
 
+// Function to upload image to Cloudinary
+const uploadImageToCloudinary = async (imagePath) => {
+  try {
+    const result = await cloudinary.uploader.upload(imagePath, {
+      folder: 'products' // Optional: Folder in Cloudinary where images will be stored
+    });
+    return result.secure_url;
+  } catch (error) {
+    console.error('Error uploading to Cloudinary:', error);
+    throw error;
+  }
+};
+
 // Function to insert products if needed
 const insertProductsIfNeeded = async () => {
   try {
+    // Load products from JSON file
     const ProductJson = require('./products.json');
+
+    // Check if products already exist
     const existingProducts = await Product.find({}, { name: 1 });
     const existingProductNames = existingProducts.map(product => product.name);
+    const insertPromises = [];
 
     for (const newProduct of ProductJson) {
       if (!existingProductNames.includes(newProduct.name)) {
-        await Product.create(newProduct);
+        // Upload main image to Cloudinary
+        const mainImageUrl = await uploadImageToCloudinary(newProduct.mainImage);
+        newProduct.mainImage = mainImageUrl;
+
+        // Upload additional images to Cloudinary
+        const additionalImageUrls = [];
+        for (const additionalImage of newProduct.additionalImages) {
+          const additionalImageUrl = await uploadImageToCloudinary(additionalImage);
+          additionalImageUrls.push(additionalImageUrl);
+        }
+        newProduct.additionalImages = additionalImageUrls;
+
+        // Create new product
+        const createPromise = Product.create(newProduct);
+        insertPromises.push(createPromise);
         console.log(`Inserted new product: ${newProduct.name}`);
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 100)); // Optional delay between inserts
       } else {
         console.log(`Product already exists: ${newProduct.name}`);
       }
     }
+
+    await Promise.all(insertPromises);
     console.log("Data insertion completed!");
   } catch (error) {
     console.error('Error inserting products:', error);
@@ -120,10 +154,6 @@ app.post('/add-product', upload.fields([{ name: 'mainImage', maxCount: 1 }, { na
   }
 });
 
-app.get("/", (req, res) => {
-  res.send("Welcome to the API");
-});
-
 // Start server and initialize operations
 const startServer = async () => {
   try {
@@ -133,8 +163,7 @@ const startServer = async () => {
     // Insert products if needed
     await insertProductsIfNeeded();
 
-    app.use('/products', productRoutes);
-
+    // Start the server
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });

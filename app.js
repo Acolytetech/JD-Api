@@ -1,6 +1,3 @@
-// server.js
-
-// Required packages
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -41,14 +38,14 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'products',
-    format: async (req, file) => 'jpeg',
+    format: async (req, file) => 'jpeg', // or any other format you prefer
     public_id: (req, file) => file.originalname,
   },
 });
 
 const upload = multer({ storage: storage });
 
-// Connect to MongoDB
+// MongoDB connection
 const connectDB = async (uri) => {
   try {
     await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -59,43 +56,54 @@ const connectDB = async (uri) => {
   }
 };
 
-// Function to generate unique order number
-const generateOrderNumber = () => {
-  return 'ORD-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-};
+// Product schema
+const ProductSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: String,
+    required: true,
+  },
+  rating: {
+    type: String,
+    required: true,
+  },
+  size: {
+    type: String,
+    required: true,
+  },
+  material: {
+    type: String,
+    required: true,
+  },
+  details: {
+    type: String,
+    required: true,
+  },
+  mainImage: {
+    type: String,
+    required: true,
+  },
+  additionalImages: {
+    type: [String],
+    required: true,
+  },
+});
 
-// Function to insert products if needed
-const insertProductsIfNeeded = async () => {
-  try {
-    const ProductJson = require('./products.json');
-    const Product = require('./models/mProduct');
-    const existingProducts = await Product.find({}, { name: 1 });
-    const existingProductNames = existingProducts.map(product => product.name);
-
-    for (const newProduct of ProductJson) {
-      if (!existingProductNames.includes(newProduct.name)) {
-        const orderNumber = generateOrderNumber(); // Generate order number
-        await Product.create({ ...newProduct, orderNumber }); // Add order number to the new product
-        console.log(`Inserted new product: ${newProduct.name}`);
-        await new Promise(resolve => setTimeout(resolve, 100));
-      } else {
-        console.log(`Product already exists: ${newProduct.name}`);
-      }
-    }
-    console.log("Data insertion completed!");
-  } catch (error) {
-    console.error('Error inserting products:', error);
-    throw error;
-  }
-};
+const Product = mongoose.model("Product", ProductSchema);
 
 // Endpoint to handle product creation
-app.post('/add-product', upload.fields([{ name: 'mainImage', maxCount: 1 }, { name: 'additionalImages', maxCount: 3 }]), async (req, res) => {
+app.post('/add-product', upload.fields([
+  { name: 'mainImage', maxCount: 1 },
+  { name: 'additionalImages', maxCount: 4 } // allowing up to 4 additional images
+]), async (req, res) => {
   try {
     console.log('Request Body:', req.body);
     console.log('Files:', req.files);
 
-    const { name, price, details, color, material, specialFeature, productDimensions, closureType, itemWeight, shape, numberOfItems, sizeOptions } = req.body;
+    const { name, price, details, material, rating, size } = req.body;
 
     if (!name || !price) {
       return res.status(400).json({ message: 'Name and price are required' });
@@ -104,73 +112,22 @@ app.post('/add-product', upload.fields([{ name: 'mainImage', maxCount: 1 }, { na
     const mainImageUrl = req.files.mainImage ? req.files.mainImage[0].path : '';
     const additionalImageUrls = req.files.additionalImages ? req.files.additionalImages.map(file => file.path) : [];
 
-    const parsedDetails = details ? JSON.parse(details) : [];
-    const parsedSizeOptions = sizeOptions ? JSON.parse(sizeOptions) : [];
-
-    const orderNumber = generateOrderNumber();
-
-    const Product = require('./models/mProduct');
     const newProduct = new Product({
       name,
       price,
-      details: parsedDetails,
-      color,
+      details,
       material,
-      specialFeature,
-      productDimensions,
-      closureType,
-      itemWeight,
-      shape,
-      numberOfItems,
-      sizeOptions: parsedSizeOptions,
+      rating,
+      size,
       mainImage: mainImageUrl,
       additionalImages: additionalImageUrls,
-      orderNumber
     });
 
     await newProduct.save();
-    res.status(201).json({ message: 'Product added successfully', orderNumber });
+    res.status(201).json(newProduct);
+
   } catch (error) {
     console.error('Error adding product:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
-});
-
-// Endpoint to get all products
-app.get("/", async (req, res) => {
-  try {
-    const Product = require('./models/mProduct');
-    const products = await Product.find({});
-    res.status(200).json(products);
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
-});
-
-// Route to get a product by ID
-app.get('/:id', async (req, res) => {
-  console.log('Request received for product ID:', req.params.id);
-  const productId = req.params.id;
-
-  if (!mongoose.Types.ObjectId.isValid(productId)) {
-    console.log('Invalid Product ID:', productId);
-    return res.status(400).json({ message: 'Invalid Product ID' });
-  }
-
-  try {
-    const Product = require('./models/mProduct');
-    const product = await Product.findById(productId);
-
-    if (!product) {
-      console.log('Product not found:', productId);
-      return res.status(404).json({ message: 'Product not found' });
-    }
-
-    console.log('Product found:', product);
-    res.status(200).json(product);
-  } catch (error) {
-    console.error('Error fetching product by ID:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
@@ -178,14 +135,11 @@ app.get('/:id', async (req, res) => {
 // Start server and initialize operations
 const startServer = async () => {
   try {
-    await connectDB(process.env.MONGODB_URI);
+    await connectDB(process.env.MONGODB_URI || "mongodb://localhost:27017/productsdb");
     console.log('MongoDB Connected');
 
-    // Insert products if needed
-    await insertProductsIfNeeded();
-
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(`Server is running on http://localhost:${PORT}`);
     });
   } catch (error) {
     console.error('Server failed to start', error);
@@ -193,5 +147,4 @@ const startServer = async () => {
   }
 };
 
-// Call function to start server
 startServer();

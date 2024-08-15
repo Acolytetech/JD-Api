@@ -38,7 +38,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'products',
-    format: async (req, file) => 'jpeg', // or any other format you prefer
+    format: async (req, file) => 'jpeg',
     public_id: (req, file) => file.originalname,
   },
 });
@@ -72,7 +72,7 @@ const ProductSchema = new mongoose.Schema({
   },
   size: {
     type: String,
-    required: true,
+    required: false,  // Make size optional
   },
   material: {
     type: String,
@@ -88,7 +88,7 @@ const ProductSchema = new mongoose.Schema({
   },
   additionalImages: {
     type: [String],
-    required: true,
+    required: false,  // Make additionalImages optional
   },
 });
 
@@ -97,38 +97,38 @@ const Product = mongoose.model("Product", ProductSchema);
 // Endpoint to handle product creation
 app.post('/add-product', upload.fields([
   { name: 'mainImage', maxCount: 1 },
-  { name: 'additionalImages', maxCount: 4 } // allowing up to 4 additional images
+  { name: 'additionalImages', maxCount: 4 }  // Allow up to 4 additional images
 ]), async (req, res) => {
   try {
-    console.log('Request Body:', req.body);
-    console.log('Files:', req.files);
+      console.log('Request Body:', req.body);
+      console.log('Files:', req.files);
 
-    const { name, price, details, material, rating, size } = req.body;
+      const { name, price, details, material, rating, size } = req.body;
 
-    if (!name || !price) {
-      return res.status(400).json({ message: 'Name and price are required' });
-    }
+      if (!name || !price) {
+          return res.status(400).json({ message: 'Name and price are required' });
+      }
 
-    const mainImageUrl = req.files.mainImage ? req.files.mainImage[0].path : '';
-    const additionalImageUrls = req.files.additionalImages ? req.files.additionalImages.map(file => file.path) : [];
+      const mainImageUrl = req.files.mainImage ? req.files.mainImage[0].path : '';
+      const additionalImageUrls = req.files.additionalImages ? req.files.additionalImages.map(file => file.path) : [];
 
-    const newProduct = new Product({
-      name,
-      price,
-      details,
-      material,
-      rating,
-      size,
-      mainImage: mainImageUrl,
-      additionalImages: additionalImageUrls,
-    });
+      const newProduct = new Product({
+          name,
+          price,
+          details,
+          material,
+          rating,
+          size: size || '',  // Ensure size is included but optional
+          mainImage: mainImageUrl,
+          additionalImages: additionalImageUrls,
+      });
 
-    await newProduct.save();
-    res.status(201).json(newProduct);
+      await newProduct.save();
+      res.status(201).json(newProduct);
 
   } catch (error) {
-    console.error('Error adding product:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+      console.error('Error adding product:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 

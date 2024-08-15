@@ -48,8 +48,7 @@ const upload = multer({ storage: storage });
 // MongoDB connection
 const connectDB = async (uri) => {
   try {
-    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log('MongoDB Connected');
+    await mongoose.connect(uri);
   } catch (error) {
     console.error('MongoDB connection error:', error);
     process.exit(1);

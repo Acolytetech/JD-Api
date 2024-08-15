@@ -48,7 +48,8 @@ const upload = multer({ storage: storage });
 // MongoDB connection
 const connectDB = async (uri) => {
   try {
-    await mongoose.connect(uri);
+    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('MongoDB Connected');
   } catch (error) {
     console.error('MongoDB connection error:', error);
     process.exit(1);
@@ -57,77 +58,68 @@ const connectDB = async (uri) => {
 
 // Product schema
 const ProductSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: String,
-    required: true,
-  },
-  rating: {
-    type: String,
-    required: true,
-  },
-  size: {
-    type: String,
-    required: false,  // Make size optional
-  },
-  material: {
-    type: String,
-    required: true,
-  },
-  details: {
-    type: String,
-    required: true,
-  },
-  mainImage: {
-    type: String,
-    required: true,
-  },
-  additionalImages: {
-    type: [String],
-    required: false,  // Make additionalImages optional
-  },
+  name: { type: String, required: true },
+  price: { type: String, required: true },
+  rating: { type: String, required: true },
+  size: { type: String, required: false },
+  material: { type: String, required: true },
+  details: { type: String, required: true },
+  mainImage: { type: String, required: true },
+  additionalImages: { type: [String], required: false },
 });
 
-const Product = mongoose.model("Product", ProductSchema);
+const Product = mongoose.model('Product', ProductSchema);
+
+// Route to check if the API is working
+// app.get('/', (req, res) => {
+//   res.send('API is working!');
+// });
 
 // Endpoint to handle product creation
 app.post('/add-product', upload.fields([
   { name: 'mainImage', maxCount: 1 },
-  { name: 'additionalImages', maxCount: 4 }  // Allow up to 4 additional images
+  { name: 'additionalImages', maxCount: 4 }
 ]), async (req, res) => {
   try {
-      console.log('Request Body:', req.body);
-      console.log('Files:', req.files);
+    console.log('Request Body:', req.body);
+    console.log('Files:', req.files);
 
-      const { name, price, details, material, rating, size } = req.body;
+    const { name, price, details, material, rating, size } = req.body;
 
-      if (!name || !price) {
-          return res.status(400).json({ message: 'Name and price are required' });
-      }
+    if (!name || !price) {
+      return res.status(400).json({ message: 'Name and price are required' });
+    }
 
-      const mainImageUrl = req.files.mainImage ? req.files.mainImage[0].path : '';
-      const additionalImageUrls = req.files.additionalImages ? req.files.additionalImages.map(file => file.path) : [];
+    const mainImageUrl = req.files.mainImage ? req.files.mainImage[0].path : '';
+    const additionalImageUrls = req.files.additionalImages ? req.files.additionalImages.map(file => file.path) : [];
 
-      const newProduct = new Product({
-          name,
-          price,
-          details,
-          material,
-          rating,
-          size: size || '',  // Ensure size is included but optional
-          mainImage: mainImageUrl,
-          additionalImages: additionalImageUrls,
-      });
+    const newProduct = new Product({
+      name,
+      price,
+      details,
+      material,
+      rating,
+      size: size || '',
+      mainImage: mainImageUrl,
+      additionalImages: additionalImageUrls,
+    });
 
-      await newProduct.save();
-      res.status(201).json(newProduct);
-
+    await newProduct.save();
+    res.status(201).json(newProduct);
   } catch (error) {
-      console.error('Error adding product:', error);
-      res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Error adding product:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Endpoint to get all products
+app.get('/', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
@@ -135,8 +127,6 @@ app.post('/add-product', upload.fields([
 const startServer = async () => {
   try {
     await connectDB(process.env.MONGODB_URI || "mongodb://localhost:27017/productsdb");
-    console.log('MongoDB Connected');
-
     app.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });

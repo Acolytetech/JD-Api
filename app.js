@@ -1,3 +1,5 @@
+// server.js
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -11,26 +13,14 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// CORS settings
-const allowedOrigins = ['http://localhost:3000'];
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}));
+app.use(express.json()); // To parse JSON bodies
+app.use(cors({ origin: 'http://localhost:3000' })); // Allow requests from React frontend
 
 // Cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // Multer configuration for Cloudinary
@@ -70,24 +60,38 @@ const ProductSchema = new mongoose.Schema({
 
 const Product = mongoose.model('Product', ProductSchema);
 
-// Endpoint to handle product creation
+// Helper function for error responses
+const sendError = (res, statusCode, message, error) => {
+  console.error(message, error.message);
+  res.status(statusCode).json({ message, error: error.message });
+};
+
+// Endpoint to add a new product
 app.post('/products', upload.fields([
   { name: 'mainImage', maxCount: 1 },
   { name: 'additionalImages', maxCount: 4 }
 ]), async (req, res) => {
   try {
-    console.log('Request Body:', req.body);
-    console.log('Files:', req.files);
+    console.log('Received Request Body:', req.body);
+    console.log('Received Files:', req.files);
 
     const { name, price, details, material, rating, size } = req.body;
 
-    if (!name || !price) {
-      return res.status(400).json({ message: 'Name and price are required' });
+    // Check for required fields
+    if (!name || !price || !details || !material || !rating) {
+      return res.status(400).json({ message: 'Name, price, details, material, and rating are required' });
     }
 
+    // Ensure main image is provided
+    if (!req.files || !req.files.mainImage) {
+      return res.status(400).json({ message: 'Main image is required' });
+    }
+
+    // Check for uploaded files
     const mainImageUrl = req.files.mainImage ? req.files.mainImage[0].path : '';
     const additionalImageUrls = req.files.additionalImages ? req.files.additionalImages.map(file => file.path) : [];
 
+    // Create and save the new product
     const newProduct = new Product({
       name,
       price,
@@ -100,26 +104,25 @@ app.post('/products', upload.fields([
     });
 
     await newProduct.save();
+    console.log('Product successfully added:', newProduct);
     res.status(201).json(newProduct);
   } catch (error) {
-    console.error('Error adding product:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    sendError(res, 500, 'Error adding product', error);
   }
 });
 
 // Endpoint to get all products
-app.get('/', async (req, res) => {
+app.get('/products', async (req, res) => {
   try {
     const products = await Product.find();
     res.status(200).json(products);
   } catch (error) {
-    console.error('Error fetching products:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    sendError(res, 500, 'Error fetching products', error);
   }
 });
 
 // Endpoint to get a single product by ID
-app.get('/:id', async (req, res) => {
+app.get('/products/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
@@ -127,15 +130,74 @@ app.get('/:id', async (req, res) => {
     }
     res.status(200).json(product);
   } catch (error) {
-    console.error('Error fetching product:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    sendError(res, 500, 'Error fetching product', error);
+  }
+});
+
+// Endpoint to update a product by ID
+app.put('/products/:id', upload.fields([
+  { name: 'mainImage', maxCount: 1 },
+  { name: 'additionalImages', maxCount: 4 }
+]), async (req, res) => {
+  try {
+    console.log('Request Body:', req.body);
+    console.log('Files:', req.files);
+
+    const { name, price, details, material, rating, size } = req.body;
+
+    const mainImageUrl = req.files.mainImage ? req.files.mainImage[0].path : '';
+    const additionalImageUrls = req.files.additionalImages ? req.files.additionalImages.map(file => file.path) : [];
+
+    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
+      name,
+      price,
+      details,
+      material,
+      rating,
+      size: size || '',
+      mainImage: mainImageUrl || undefined,
+      additionalImages: additionalImageUrls.length ? additionalImageUrls : undefined,
+    }, { new: true });
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    sendError(res, 500, 'Error updating product', error);
+  }
+});
+
+// Endpoint to delete a product by ID
+app.delete('/products/:id', async (req, res) => {
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.status(200).json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    sendError(res, 500, 'Error deleting product', error);
   }
 });
 
 // Start server and initialize operations
 const startServer = async () => {
+  const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/productsdb';
+  
+  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+    console.error('Missing Cloudinary environment variables.');
+    process.exit(1);
+  }
+
+  if (!mongoUri) {
+    console.error('Missing MongoDB URI.');
+    process.exit(1);
+  }
+
   try {
-    await connectDB(process.env.MONGODB_URI || "mongodb://localhost:27017/productsdb");
+    await connectDB(mongoUri);
     app.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });

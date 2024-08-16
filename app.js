@@ -70,13 +70,8 @@ const ProductSchema = new mongoose.Schema({
 
 const Product = mongoose.model('Product', ProductSchema);
 
-// Route to check if the API is working
-// app.get('/', (req, res) => {
-//   res.send('API is working!');
-// });
-
 // Endpoint to handle product creation
-app.post('/add-product', upload.fields([
+app.post('/products', upload.fields([
   { name: 'mainImage', maxCount: 1 },
   { name: 'additionalImages', maxCount: 4 }
 ]), async (req, res) => {
@@ -119,6 +114,20 @@ app.get('/', async (req, res) => {
     res.status(200).json(products);
   } catch (error) {
     console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Endpoint to get a single product by ID
+app.get('/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    console.error('Error fetching product:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });

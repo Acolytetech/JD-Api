@@ -17,13 +17,23 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
-// Get a single product by order number
+// Get a single product by order number or ID
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findOne({ orderNumber: req.params.orderNumber });
+    const { identifier } = req.params;
+    
+    // Check if the identifier is a valid ObjectId
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier);
+
+    // Find product by order number or ID
+    const product = isObjectId
+      ? await Product.findById(identifier) // If it's a valid ObjectId, search by ID
+      : await Product.findOne({ orderNumber: identifier }); // Otherwise, search by orderNumber
+
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
+
     res.status(200).json(product);
   } catch (error) {
     console.error('Error fetching product:', error);
@@ -94,7 +104,7 @@ exports.updateProduct = async (req, res) => {
     const parsedSizeOptions = sizeOptions ? JSON.parse(sizeOptions) : [];
 
     const updatedProduct = await Product.findOneAndUpdate(
-      { orderNumber: req.params.orderNumber },
+      { orderNumber: req.params.identifier },
       {
         name,
         price,
@@ -128,7 +138,7 @@ exports.updateProduct = async (req, res) => {
 // Delete a product
 exports.deleteProduct = async (req, res) => {
   try {
-    const deletedProduct = await Product.findOneAndDelete({ orderNumber: req.params.orderNumber });
+    const deletedProduct = await Product.findOneAndDelete({ orderNumber: req.params.identifier });
 
     if (!deletedProduct) {
       return res.status(404).json({ message: 'Product not found' });

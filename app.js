@@ -1,5 +1,3 @@
-// server.js
-
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -28,7 +26,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'products',
-    format: async (req, file) => 'jpeg',
+    format: async (req, file) => 'jpeg', // Specify format here
     public_id: (req, file) => file.originalname,
   },
 });
@@ -38,7 +36,7 @@ const upload = multer({ storage: storage });
 // MongoDB connection
 const connectDB = async (uri) => {
   try {
-    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(uri); // Removed deprecated options
     console.log('MongoDB Connected');
   } catch (error) {
     console.error('MongoDB connection error:', error);

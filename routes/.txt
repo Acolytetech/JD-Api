@@ -1,0 +1,269 @@
+Error fetching product Cast to ObjectId failed for value "products" (type string) at path "_id" for model "Product"
+Error fetching product Cast to ObjectId failed for value "products" (type string) at path "_id" for model "Product"
+const Product = require('../models/mProduct');
+const cloudinary = require('cloudinary').v2;
+
+// Function to generate unique order number
+const generateOrderNumber = () => {
+  return 'ORD-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+};
+
+// Get all products
+exports.getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Error fetching products', error });
+  }
+};
+
+// Get a single product by order number or ID
+exports.getProductById = async (req, res) => {
+  try {
+    const { identifier } = req.params;
+    
+    // Check if the identifier is a valid ObjectId
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier);
+
+    // Find product by order number or ID
+    const product = isObjectId
+      ? await Product.findById(identifier) // If it's a valid ObjectId, search by ID
+      : await Product.findOne({ orderNumber: identifier }); // Otherwise, search by orderNumber
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    res.status(500).json({ message: 'Error fetching product', error });
+  }
+};
+
+// Upload image to Cloudinary
+const uploadImageToCloudinary = async (file) => {
+  const result = await cloudinary.uploader.upload(file.path, {
+    folder: 'products'
+  });
+  return result.secure_url;
+};
+
+// Create a new product
+exports.createProduct = async (req, res) => {
+  try {
+    const { name, price, details, color, material, specialFeature, productDimensions, closureType, itemWeight, shape, numberOfItems, sizeOptions } = req.body;
+
+    if (!name || !price) {
+      return res.status(400).json({ message: 'Name and price are required' });
+    }
+
+    const mainImageUrl = req.files['mainImage'] ? await uploadImageToCloudinary(req.files['mainImage'][0]) : '';
+    const additionalImageUrls = req.files['additionalImages'] ? await Promise.all(req.files['additionalImages'].map(file => uploadImageToCloudinary(file))) : [];
+
+    const parsedDetails = details ? JSON.parse(details) : [];
+    const parsedSizeOptions = sizeOptions ? JSON.parse(sizeOptions) : [];
+
+    const orderNumber = generateOrderNumber(); // Generate unique order number
+
+    const newProduct = new Product({
+      name,
+      price,
+      details: parsedDetails,
+      color,
+      material,
+      specialFeature,
+      productDimensions,
+      closureType,
+      itemWeight,
+      shape,
+      numberOfItems,
+      sizeOptions: parsedSizeOptions,
+      mainImage: mainImageUrl,
+      additionalImages: additionalImageUrls,
+      orderNumber
+    });
+
+    const savedProduct = await newProduct.save();
+    res.status(201).json({ message: 'Product added successfully', orderNumber });
+  } catch (error) {
+    console.error('Error adding product:', error);
+    res.status(500).json({ message: 'Error adding product', error });
+  }
+};
+
+// Update a product
+exports.updateProduct = async (req, res) => {
+  try {
+    const { name, price, details, color, material, specialFeature, productDimensions, closureType, itemWeight, shape, numberOfItems, sizeOptions } = req.body;
+
+    const mainImageUrl = req.files['mainImage'] ? await uploadImageToCloudinary(req.files['mainImage'][0]) : '';
+    const additionalImageUrls = req.files['additionalImages'] ? await Promise.all(req.files['additionalImages'].map(file => uploadImageToCloudinary(file))) : [];
+
+    const parsedDetails = details ? JSON.parse(details) : [];
+    const parsedSizeOptions = sizeOptions ? JSON.parse(sizeOptions) : [];
+
+    const updatedProduct = await Product.findOneAndUpdate(
+      { orderNumber: req.params.identifier },
+      {
+        name,
+        price,
+        details: parsedDetails,
+        color,
+        material,
+        specialFeature,
+        productDimensions,
+        closureType,
+        itemWeight,
+        shape,
+        numberOfItems,
+        sizeOptions: parsedSizeOptions,
+        mainImage: mainImageUrl,
+        additionalImages: additionalImageUrls
+      },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json({ message: 'Product updated successfully', updatedProduct });
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ message: 'Error updating product', error });
+  }
+};
+
+// Delete a product
+exports.deleteProduct = async (req, res) => {
+  try {
+    const deletedProduct = await Product.findOneAndDelete({ orderNumber: req.params.identifier });
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).json({ message: 'Error deleting product', error });
+  }
+};
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+require('dotenv').config();
+
+// Initialize Express app
+const app = express();
+const PORT = process.env.PORT || 4000;
+
+// Middleware
+app.use(express.json()); // To parse JSON bodies
+app.use(cors({ origin: 'http://localhost:3000' })); // Allow requests from React frontend
+
+// Cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Multer configuration for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'products',
+    format: async (req, file) => 'jpeg',
+    public_id: (req, file) => file.originalname,
+  },
+});
+
+const upload = multer({ storage: storage });
+
+// MongoDB connection
+const connectDB = async (uri) => {
+  try {
+    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('MongoDB Connected');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
+  }
+};
+
+// Product schema
+const ProductSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  price: { type: String, required: true },
+  rating: { type: String, required: true },
+  size: { type: String, required: false },
+  material: { type: String, required: true },
+  details: { type: String, required: true },
+  mainImage: { type: String, required: true },
+  additionalImages: { type: [String], required: false },
+});
+
+const Product = mongoose.model('Product', ProductSchema);
+
+// Helper function for error responses
+const sendError = (res, statusCode, message, error) => {
+  console.error(message, error.message);
+  res.status(statusCode).json({ message, error: error.message });
+};
+
+// Endpoint to get all products (root route '/')
+app.get('/', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json(products);
+  } catch (error) {
+    sendError(res, 500, 'Error fetching products', error);
+  }
+});
+
+// Endpoint to get a single product by ID ('/:id')
+app.get('/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    sendError(res, 500, 'Error fetching product', error);
+  }
+});
+
+// Start server and initialize operations
+const startServer = async () => {
+  const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/productsdb';
+
+  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+    console.error('Missing Cloudinary environment variables.');
+    process.exit(1);
+  }
+
+  if (!mongoUri) {
+    console.error('Missing MongoDB URI.');
+    process.exit(1);
+  }
+
+  try {
+    await connectDB(mongoUri);
+    app.listen(PORT, () => {
+      console.log(Server is running on http://localhost:${PORT});
+    });
+  } catch (error) {
+    console.error('Server failed to start', error);
+    process.exit(1);
+  }
+};
+
+startServer()

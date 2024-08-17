@@ -67,7 +67,7 @@ const sendError = (res, statusCode, message, error) => {
 };
 
 // Endpoint to add a new product
-app.post('/', upload.fields([
+app.post('/products', upload.fields([
   { name: 'mainImage', maxCount: 1 },
   { name: 'additionalImages', maxCount: 4 }
 ]), async (req, res) => {
@@ -112,7 +112,7 @@ app.post('/', upload.fields([
 });
 
 // Endpoint to get all products
-app.get('/', async (req, res) => {
+app.get('/products', async (req, res) => {
   try {
     const products = await Product.find();
     res.status(200).json(products);
@@ -122,7 +122,7 @@ app.get('/', async (req, res) => {
 });
 
 // Endpoint to get a single product by ID
-app.get('/:id', async (req, res) => {
+app.get('/products/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
@@ -170,7 +170,7 @@ app.put('/products/:id', upload.fields([
 });
 
 // Endpoint to delete a product by ID
-app.delete('/:id', async (req, res) => {
+app.delete('/products/:id', async (req, res) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
     if (!deletedProduct) {
